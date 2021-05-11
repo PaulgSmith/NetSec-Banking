@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Root>
+    <Customers>
+        <Customer CustomerID="jsmith">
+            <Username>jsmith</Username>
+            <FirstName>John</FirstName>
+            <LastName>Smith</LastName>
+            <Password>password</Password>
+            <Address>1234 Test Ave, Los Angeles, CA 90210</Address>
+        </Customer>
+        <Customer CustomerID="mgofman">
+            <Username>mgofman</Username>
+            <FirstName>Mikhail</FirstName>
+            <LastName>Gofman</LastName>
+            <Password>12345678</Password>
+            <Address>1234 Test Ave, Los Angeles, CA 90210</Address>
+        </Customer>
+    </Customers>
+    <Accounts>
+        <Account>
+            <CustomerID>mgofman</CustomerID>
+            <Name>Murka's Offshore Checkings</Name>
+            <Type>C</Type>
+            <Balance>3540.54</Balance>
+        </Account>
+        <Account>
+            <CustomerID>mgofman</CustomerID>
+            <Name>Super Savings</Name>
+            <Type>S</Type>
+            <Balance>0.00</Balance>
+        </Account>
+        <Account>
+            <CustomerID>jsmith</CustomerID>
+            <Name>John's Checking Account</Name>
+            <Type>C</Type>
+            <Balance>9001.00</Balance>
+        </Account>
+    </Accounts>
+</Root>

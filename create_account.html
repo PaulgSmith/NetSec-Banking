@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create Account</title>
+        <link rel="stylesheet" type ="text/css" href="style.css">
+    </head>
+    <h1>
+        <center> Create a New Account</center>
+    </h1>
+    <body>
+       <div class="form-container"> 
+        <ul class="list">
+            <li><h2>Account creator</h2></li>
+            <li><form action="/create_account" method="POST"></form>
+                <label for="accountName">Account Name:</label>
+                <input type="text" name="accountName" placeholder="" /></li>
+                <li><label for="accountType">Account Type:</label></li>
+                <select name="account" id="account">
+                    <option value="checking">Checking</option>
+                    <option value="saving">Saving</option>
+                </select> </li><br><br>
+                <li><input type="button" name= "Submit" value="Submit" /></li>
+        </ul>
+       </div> 
+    </body>
+</html>
