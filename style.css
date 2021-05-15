@@ -44,3 +44,43 @@
         color: #fff;
         box-shadow: 0 5px #666;
     }
+
+    input[name= "Deposit"]{
+        background-color: #4690fb;
+        text-align: center;
+        font-size: 17px;
+        width:250px;
+        text-align: center;
+        padding: 8px 0px;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        box-shadow: 0 5px #666;
+    }
+    input[name= "Withdraw"]{
+        background-color: #4690fb;
+        text-align: center;
+        font-size: 17px;
+        width:250px;
+        text-align: center;
+        padding: 8px 0px;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        box-shadow: 0 5px #666;
+    }
+    input[name= "Transfer"]{
+        background-color: #4690fb;
+        text-align: center;
+        font-size: 17px;
+        width:250px;
+        text-align: center;
+        padding: 8px 0px;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        box-shadow: 0 5px #666;
+    }
+
+
+

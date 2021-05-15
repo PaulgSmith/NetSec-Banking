@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
 --Create Account Table 
 CREATE TABLE IF NOT EXISTS `account` (
   `account_number` int  NOT NULL AUTO_INCREMENT,
-  `account_name` VARCHAR(255) NOT NULL UNIQUE,
+  `account_name` VARCHAR(255) NOT NULL,
   `account_type` VARCHAR(255) NOT NULL,
   `balance`  FLOAT DEFAULT 0.00,
   `username` VARCHAR(255) NOT NULL,

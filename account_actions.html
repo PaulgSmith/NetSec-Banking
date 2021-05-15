@@ -1,20 +1,31 @@
 <html>
     <head>
-        <title>Account Actions</title>
+        <title>Account Management</title>
+        <link rel="stylesheet" type ="text/css" href="style.css">
     </head>
+    <h1>
+        <center> Account Management</center>
+    </h1>
     <body>
-        Todo: do a for loop to display all accounts</br>
-        <label for="account">Please select an account you would like to manage:</label></br>
-        // drop down starts
-        <select name="account" id="account">
-            <option value="acc1">name of account 1</option>
-            <option value="acc2">name of account 2</option>
-            <option value="acc3">name of account 3</option>
-            <option value="acc4">name of account 4</option>
-        </select>
-        // drop down ends here
+        <div class="form-container">
+        <ul class="list">
+            <form action="/account_actions" method="POST">
+                <li><label for="deposit">Deposit</label>
+            <input type="text" name="deposit" placeholder="" required/></li> <li><input type="button" name="Deposit" value="Submit"></li>
+            <li><label for="withdraw">Withdraw</label>
+                <input type="text" name="withdraw" placeholder="" required/></li><li><input type="button" name="Withdraw" value="Submit"></li>
+                <li><label for="transfer">Transfer Money to Another Account</label></li>
+                    <li><select name="accounts" id="accounts">
+                        <option value="1" default>Bank acc 1</option>
+                        <option value="2">Bank acc 2</option>
+                        <option value="3">Bank acc 3</option>
+                    </select></li>
+                    <li><input type="text" name="transfer" placeholder="" required/></li> <li><input type="button" name="Transfer" value="Submit"></li>
+        </form></li>
         <br>
         <br>
-        <a href="/view_account">Back</a>
+        <a href="/view_account">Return to View Accounts</a>
+        </ul>
+        </div>
     </body>
 </html>
