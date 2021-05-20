@@ -5,7 +5,10 @@ const xssFilters = require('xss-filters');
 const express = require("express");
 const session = require('client-sessions');
 const mysql = require('mysql');
-//const csp = require('helmet-csp');
+const csp = require('helmet-csp');
+
+
+
 
 const app = express();
 
@@ -24,24 +27,18 @@ const connection = mysql.createConnection({
     multipleStatements: true
 });
 
-// connection.query("", function (err, result) {
-//     if (err) {
-//         console.log(err);
-//         req.info = `There was a problem with the query`;
-//         req.show_results = ``;
-//         return res.render('results', { info: `${req.info}`, show_results: `${req.show_results}` });
-//     } else {
-//         req.info = `Success`;
-//         req.show_results = ``;
-//         return res.render('results', { info: `${req.info}`, show_results: `${req.show_results}` });
-//     }
-// });
-
 
 // Needed to parse the request body
 //Note that in version 4 of express, express.bodyParser() was
 //deprecated in favor of a separate 'body-parser' module.
 app.use(express.urlencoded({ extended: true }));
+
+
+
+app.use(csp({
+    directives: {
+      defaultSrc: ["'self'"]
+    }}))
 
 //Creates session cookie that lasts 3 min.
 //Each user action will reset the cookie to 3min.
@@ -258,7 +255,9 @@ app.get("/create_account", requireLogin, function (req, res) {
     res.send(page);
 });
 
-//xssFilters.inHTMLData(req.body.balance)
+/*
+    Balance needs a float check
+*/
 app.post("/create_account", requireLogin, function (req, res) {
     let sql = `INSERT INTO account(account_name, account_type, balance, username) ` +
         `VALUES ("${xssFilters.inHTMLData(req.body.accountName)}", "${xssFilters.inHTMLData(req.body.accountType)}","${xssFilters.inHTMLData(req.body.balance)}", (SELECT username FROM customer WHERE username = "${req.session.user}"))`
@@ -273,7 +272,11 @@ app.post("/create_account", requireLogin, function (req, res) {
     });
 });
 
-//http://localhost:3000/account_actions?number=1
+
+/*
+    req.query.number needs an int check
+
+*/
 //Transfer (within own user accounts), deposit, withdraw 
 app.get("/account_actions", requireLogin, function (req, res) {
     //TODO JS
@@ -341,6 +344,13 @@ app.get("/account_actions", requireLogin, function (req, res) {
 
 });
 //xssFilters.inHTMLData(req.query.number)
+/*
+    Deposit needs a float check
+    Withdraw needs a float check
+    transfer needs a float check
+    Accounts needs an int check
+
+*/
 app.post("/account_actions", requireLogin, function (req, res) {
     let sql;
     if (req.query.deposit) {
@@ -414,4 +424,3 @@ app.get('/logout', function (req, res) {
 
 app.listen(3000);
 
-//TODO remove query info from link
