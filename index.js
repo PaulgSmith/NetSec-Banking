@@ -4,7 +4,7 @@
 const xssFilters = require("xss-filters");
 const express = require("express");
 const session = require("client-sessions");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const csp = require("helmet-csp");
 
 const app = express();
