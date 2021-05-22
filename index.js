@@ -14,9 +14,9 @@ function alphanumeric(inputtxt, type) {
     if (type === "user") {
         regex = /[a-zA-Z]+[A-Za-z0-9_]*/g;
     } else if (type == "password") {
-        regex = /[A-Za-z0-9_!#$%]*/g;
+        regex = /[A-Za-z0-9_!#$%]+/g;
     } else if (type === "name") {
-        regex = /[a-zA-Z]+[A-Za-z ]+/g;
+        regex = /[a-zA-Z]+[A-Za-z ]*/g;
     } else if (type === "address") {
         regex = /[0-9]+[A-Za-z0-9 ]+/g;
     }
@@ -43,7 +43,6 @@ const dbCredentials = {
     host: "localhost",
     database: "bank",
 };
-Object.freeze(dbCredentials);
 
 const connection = mysql.createConnection({
     host: dbCredentials.host,
@@ -52,7 +51,6 @@ const connection = mysql.createConnection({
     database: dbCredentials.database,
     multipleStatements: true,
 });
-Object.seal(connection);
 
 // Needed to parse the request body
 //Note that in version 4 of express, express.bodyParser() was
@@ -141,7 +139,6 @@ app.post("/login", function (req, res) {
     let username = xssFilters.inHTMLData(req.body.username);
     let password = xssFilters.inHTMLData(req.body.password);
 
-    //TODO TEST THIS
     if (alphanumeric(username, "user") && alphanumeric(password, "password")) {
         let sql = 'SELECT password FROM `customer` WHERE `username` = ?';
         connection.execute(sql, [`${username}`], function (err, result) {
@@ -179,15 +176,25 @@ app.get("/register_customer", function (req, res) {
     page += '<ul class="list">';
     page += '<li><form action="/register_customer" method="POST"></li>';
     page +=
-        ' <li><label for="username">Username</label> <input type="text" id="username" name="username" pattern= "[a-zA-Z]+[A-Za-z0-9_]*" required></li>';
+        ' <li><label for="username">Username</label>';
+    page += ' <p ><font size = "1"> Should start with a letter & have atleast 1 letter.</font></p>'
+    page += '<input type="text" id="username" name="username" pattern= "[a-zA-Z]+[A-Za-z0-9_]*" required></li>';
     page +=
-        ' <li><label for="firstName">First Name</label>  <input type="text" id="firstName" name="firstName" pattern= "[a-zA-Z]+" required></li>';
+        ' <li><label for="firstName">First Name</label>';
+    page += '<p ><font size = "1"> Should have atleast 1 letter & no numbers or any characters.</font></p>';
+    page += '<input type="text" id="firstName" name="firstName" pattern= "[a-zA-Z]+[A-Za-z ]*" required></li>';
     page +=
-        '<li><label for="lastName">Last Name</label> <input type="text" id="lastName" name="lastName" pattern= "[a-zA-Z]+" required></li>';
+        '<li><label for="lastName">Last Name</label>';
+    page += '<p ><font size = "1"> Should have atleast 1 letter & no numbers or any characters.</font></p>';
+    page += '<input type="text" id="lastName" name="lastName" pattern= "[a-zA-Z]+[A-Za-z ]*" required></li>';
     page +=
-        '<li><label for="address">Address</label> <input type="text" id="address" name="address" pattern = "[0-9]+[A-Za-z 0-9]+" required ></li>';
+        '<li><label for="address">Address</label>';
+    page += '<p ><font size = "1"> Should start with a number & have atleast 1 letter.</font></p>';
+    page += '<input type="text" id="address" name="address" pattern = "[0-9]+[A-Za-z 0-9]+" required ></li>';
     page +=
-        '<li><label for="pass">Password</label><input type="password" id="pass" name="password" pattern= "[A-Za-z0-9_!#$%]+" minlength="8" required maxlength="12" required></li>';
+        '<li><label for="pass">Password</label>';
+    page += '<p ><font size = "1"> Should be between 8 & 12 characters[!#$%].</font></p>';
+    page += '<input type="password" id="pass" name="password" pattern= "[A-Za-z0-9_!#$%]+" minlength="8" required maxlength="12" required></li>';
     page += ' <input type="submit" name= "b1" value="Create">';
     page += "</form>";
     page += "</ul>";
@@ -263,7 +270,7 @@ app.get("/view_account", requireLogin, function (req, res) {
         }
     });
 });
-//xssFilters.inHTMLData(req.query.error_create_account)
+
 app.get("/create_account", requireLogin, function (req, res) {
     let page = `<html>`;
     page += "<head>";
@@ -275,7 +282,6 @@ app.get("/create_account", requireLogin, function (req, res) {
     page += "</center>";
     page += "<body>";
     if (req.query.error_create_account) {
-        //TODO: Place me somewhere nice
         page += `<center><b>There was an error with your account creation.</b></center><br><br>`;
     }
     page += '<div class="form-container">';
@@ -315,9 +321,9 @@ app.post("/create_account", requireLogin, function (req, res) {
         alphanumeric(accountType, "user")
     ) {
         //Check this twice lol
-        let sql = 'INSERT INTO `account` (`account_name`, `account_type`, `balance`, `username`) SELECT ?,?,? `username` FROM `customer` WHERE `username` = ?';
+        let sql = 'INSERT INTO `account` (`account_name`, `account_type`, `balance`, `username`) SELECT ?,?,?, `username` FROM `customer` WHERE `username` = ?';
 
-        connection.execute(sql,[`${accountName}`, `${accountType}`, `${balance}`, `${req.session.user}`],  function (err, result) {
+        connection.execute(sql, [`${accountName}`, `${accountType}`, `${balance}`, `${req.session.user}`], function (err, result) {
             if (err) {
                 console.log(err);
                 res.render();
@@ -407,7 +413,7 @@ app.get("/account_actions", requireLogin, function (req, res) {
 */
 
 app.post("/account_actions", requireLogin, function (req, res) {
-    let accountBody = parseInt(xssFilters.inHTMLData(req.body.account));
+    let accountBody = parseInt(xssFilters.inHTMLData(req.body.accounts));
     let account = parseInt(xssFilters.inHTMLData(req.session.account));
     let deposit = parseFloat(xssFilters.inHTMLData(req.body.deposit));
     let withdraw = parseFloat(xssFilters.inHTMLData(req.body.withdraw));
@@ -454,9 +460,9 @@ app.post("/account_actions", requireLogin, function (req, res) {
     }
     else if (req.query.transfer) {
         if (checkNum(transfer, "float")) {
-            let sql2 ='UPDATE `account` SET `balance` = `balance` - ? WHERE `account_number` = ? AND  `balance` >= ?';
+            let sql2 = 'UPDATE `account` SET `balance` = `balance` - ? WHERE `account_number` = ? AND  `balance` >= ?';
 
-            connection.execute(sql2,[`${transfer.toFixed(2)}`, `${account}` , `${transfer.toFixed(2)}`], function (err, result) {
+            connection.execute(sql2, [`${transfer.toFixed(2)}`, `${account}`, `${transfer.toFixed(2)}`], function (err, result) {
                 if (err) {
                     console.log(err);
                     res.redirect("/view_account?error=true");
@@ -464,7 +470,8 @@ app.post("/account_actions", requireLogin, function (req, res) {
                     if (result.affectedRows === 0) {
                         res.redirect("/view_account?error=true");
                     } else {
-                        sql ='UPDATE `account` SET `balance` = `balance` + ? WHERE `account_number` = ?;';
+                        sql = 'UPDATE `account` SET `balance` = `balance` + ? WHERE `account_number` = ?;';
+                        console.log(req.body.account);
                         connection.execute(sql, [`${transfer.toFixed(2)}`, `${accountBody}`], function (err, result) {
                             if (err) {
                                 console.log(err);
@@ -495,3 +502,6 @@ app.get("/logout", function (req, res) {
 });
 
 app.listen(3000);
+
+
+

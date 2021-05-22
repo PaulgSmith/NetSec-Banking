@@ -1,9 +1,9 @@
 -- Create Customer Table
 CREATE TABLE IF NOT EXISTS `customer` (
-  `username` VARCHAR(255) NOT NULL,
-  `first_name` VARCHAR(255) NOT NULL,
-  `last_name` VARCHAR(255) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
+  `username` VARCHAR(20) NOT NULL,
+  `first_name` VARCHAR(20) NOT NULL,
+  `last_name` VARCHAR(20) NOT NULL,
+  `password` VARCHAR(12) NOT NULL,
   `address` VARCHAR(255) NOT NULL,
   PRIMARY KEY (username)
 );
@@ -11,10 +11,10 @@ CREATE TABLE IF NOT EXISTS `customer` (
 --Create Account Table 
 CREATE TABLE IF NOT EXISTS `account` (
   `account_number` int  NOT NULL AUTO_INCREMENT,
-  `account_name` VARCHAR(255) NOT NULL,
-  `account_type` VARCHAR(255) NOT NULL,
+  `account_name` VARCHAR(20) NOT NULL,
+  `account_type` VARCHAR(20) NOT NULL,
   `balance`  FLOAT DEFAULT 0.00,
-  `username` VARCHAR(255) NOT NULL,
+  `username` VARCHAR(20) NOT NULL,
   PRIMARY KEY (account_number),
   FOREIGN KEY (username) REFERENCES customer(username)
 );
