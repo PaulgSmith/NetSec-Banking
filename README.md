@@ -25,14 +25,13 @@ mysql -u db1 -p bank < bank.sql;
 ```
 
 ## Use cases
-The main pages for our site
-
 ```
 Register
 Log in
 Deposit
 Withdraw
 Transfer
+Log out
 
 ```
 
