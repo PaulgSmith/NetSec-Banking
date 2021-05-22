@@ -31,6 +31,7 @@ Log in
 Deposit
 Withdraw
 Transfer
+Log out
 
 ```
 
