@@ -87,7 +87,7 @@ function requireLogin(req, res, next) {
 }
 
 // use express static middleware to serve static files
-app.use(express.static(__dirname));
+app.use("/styles", express.static(__dirname + '/styles'));
 
 // account - bank account
 // customer - user account
@@ -104,7 +104,7 @@ app.get("/login", function (req, res) {
     let page = "<html>";
     page += "<head>";
     page += "<title>Login</title>";
-    page += '<link rel="stylesheet" type ="text/css" href="style.css" />';
+    page += '<link rel="stylesheet" type ="text/css" href="/styles/style.css" />';
     page += "</head>";
     page += "<center>";
     page += "<h1>Welcome to Bank App</h1>";
